@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">白芯源 2024110502</string>
+
+    <string name="title_main">玩家信息</string>
+    <string name="title_edit">修改信息</string>
+    <string name="title_game">翻牌游戏</string>
+
+    <string name="label_name">姓名</string>
+    <string name="label_gender">性别</string>
+    <string name="label_phone">电话</string>
+    <string name="label_high_score">最高分</string>
+
+    <string name="btn_edit">修改信息</string>
+    <string name="btn_play">开始游戏</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_restart">重新开始一局</string>
+
+    <string name="gender_male">男</string>
+    <string name="gender_female">女</string>
+
+    <string name="default_name">Komeiji Koishi</string>
+    <string name="default_gender">女</string>
+    <string name="default_phone">138 0000 0000</string>
+
+    <string name="value_score">分数 %1$d</string>
+    <string name="value_best">最高 %1$d</string>
+    <string name="value_matched">配对 %1$d/16</string>
+    <string name="status_hint">点击卡片翻开，点数相同即可配对得分</string>
+    <string name="status_mismatch">点数不同，两张牌都翻回去</string>
+    <string name="status_finished">恭喜，全部配对完成！</string>
+
+    <string name="hint_name">请输入姓名</string>
+    <string name="hint_phone">请输入电话</string>
+    <string name="error_name_empty">姓名不能为空</string>
+    <string name="error_phone_empty">电话不能为空</string>
+    <string name="toast_saved">信息已保存</string>
+
+    <string name="card_back_desc">未翻开的牌</string>
+    <string name="card_face_desc">%1$s%2$s</string>
+
+    <string name="info_hint">修改后的信息仅保存在内存中，不写入文件</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="page_padding">20dp</dimen>
+    <dimen name="panel_padding">18dp</dimen>
+    <dimen name="row_spacing">12dp</dimen>
+    <dimen name="card_gap">4dp</dimen>
+    <dimen name="button_height">52dp</dimen>
+</resources>
