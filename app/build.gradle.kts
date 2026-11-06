@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4"
+    namespace = "cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4"
+        applicationId = "cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

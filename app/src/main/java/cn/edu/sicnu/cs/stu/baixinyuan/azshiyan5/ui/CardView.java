@@ -1,4 +1,4 @@
-package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.ui;
+package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.ui;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import cn.edu.sicnu.cardgame.Card;
-import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.R;
+import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.R;
 
 /**
  * 单张卡牌的视图（View）：

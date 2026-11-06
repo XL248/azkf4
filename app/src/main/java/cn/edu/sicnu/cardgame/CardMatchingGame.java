@@ -4,30 +4,75 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 翻牌配对游戏的模型（Model）：
- * 只包含游戏规则与状态，不涉及任何界面代码，便于单元测试。
- * 由实验附件 CardMatchingGame.kt 等价改写为 Java。
+ * 翻牌游戏模型（实验五：3 张牌配对规则）。
+ *
+ * <p>规则：一次翻开 3 张牌，若三张点数完全相同则配对成功（3 张一起锁定），
+ * 否则算错配，三张牌保持翻开等待界面翻回。花色不参与判定。</p>
+ *
+ * <p>计分：每翻开 1 张 -1；配对成功 +4 × 3；错配 -2 × 2。</p>
+ *
+ * <p>本类不依赖任何 Android 组件（MVC 的 Model 层）。</p>
  */
 public class CardMatchingGame {
 
-    /** 配对成功奖励系数 */
-    public static final int MATCH_BONUS = 4;
-    /** 配对失败扣分 */
-    public static final int MISMATCH_PENALTY = 2;
-    /** 每翻开一张牌的代价 */
-    public static final int COST_TO_CHOOSE = 1;
+    /** 一局配对所需的牌数（3 张牌模式） */
+    public static final int MATCH_GROUP_SIZE = Card.MATCH_GROUP_SIZE;
 
-    private int score = 0;
-    private final List<Card> cards;
+    private static final int MATCH_BONUS = 4;
+    private static final int MISMATCH_PENALTY = 2;
+    private static final int COST_TO_CHOOSE = 1;
+    /** reset() 无参时的默认张数（对应竖屏 3 列 × 8 行） */
+    private static final int DEFAULT_CARD_COUNT = 24;
 
-    /** 发一局牌：count 张，按点数成对发放，保证整局可以 100% 配对完 */
-    public CardMatchingGame(int count) {
-        cards = new ArrayList<>(new Deck().drawMatchedCards(count));
+    /** 本次 chooseCardAtIndex 的结果，供 Controller 决定是否需要延时翻回 */
+    public enum Result {
+        /** 还在凑 3 张，未结算 */
+        NONE,
+        /** 本次凑齐 3 张且配对成功 */
+        MATCHED,
+        /** 本次凑齐 3 张但点数不同 */
+        MISMATCH
     }
 
-    /** 供单元测试使用：直接指定这一局的牌 */
-    public CardMatchingGame(List<Card> cards) {
-        this.cards = new ArrayList<>(cards);
+    private final List<Card> cards = new ArrayList<>();
+    private int score;
+    private int lastCardCount = DEFAULT_CARD_COUNT;
+    private Result lastResult = Result.NONE;
+
+    /** 按张数从牌堆发一副必定能全部配对的牌 */
+    public CardMatchingGame(int count) {
+        reset(count);
+    }
+
+    /** 直接用给定的牌构造（单元测试用），不会重新发牌 */
+    public CardMatchingGame(List<Card> givenCards) {
+        if (givenCards != null) {
+            cards.addAll(givenCards);
+        }
+        lastCardCount = cards.size();
+        score = 0;
+        lastResult = Result.NONE;
+    }
+
+    /**
+     * 【实验五新增】重开一局：按上一次的张数重新发牌、分数清零、所有牌翻回。
+     */
+    public void reset() {
+        reset(lastCardCount);
+    }
+
+    /**
+     * 【实验五新增】按指定张数重开一局。
+     *
+     * @param count 牌数，必须是 {@link #MATCH_GROUP_SIZE} 的整数倍
+     */
+    public void reset(int count) {
+        List<Card> dealt = new Deck().drawMatchedCards(count, MATCH_GROUP_SIZE);
+        cards.clear();
+        cards.addAll(dealt);
+        lastCardCount = cards.size();
+        score = 0;
+        lastResult = Result.NONE;
     }
 
     public int getScore() {
@@ -42,7 +87,11 @@ public class CardMatchingGame {
         return cards.get(index);
     }
 
-    /** 已翻开的牌数（用于界面显示） */
+    public Result getLastResult() {
+        return lastResult;
+    }
+
+    /** 当前翻开（含已配对）的牌数 */
     public int getChosenCount() {
         int count = 0;
         for (Card card : cards) {
@@ -53,7 +102,7 @@ public class CardMatchingGame {
         return count;
     }
 
-    /** 已翻开但还没配对的牌数（不匹配判定的依据，已配对的牌不算） */
+    /** 当前翻开但还没配对的牌数（0..3），凑满 3 张才结算 */
     public int getChosenUnmatchedCount() {
         int count = 0;
         for (Card card : cards) {
@@ -64,7 +113,6 @@ public class CardMatchingGame {
         return count;
     }
 
-    /** 已配对成功的牌数 */
     public int getMatchedCount() {
         int count = 0;
         for (Card card : cards) {
@@ -75,21 +123,30 @@ public class CardMatchingGame {
         return count;
     }
 
-    /** 是否所有牌都已配对 */
     public boolean isFinished() {
-        return getMatchedCount() == cards.size();
+        for (Card card : cards) {
+            if (!card.isMatched) {
+                return false;
+            }
+        }
+        return !cards.isEmpty();
     }
 
     /**
-     * 翻开 / 收起指定下标的牌，并按规则更新分数：
-     * 再次点击已翻开的牌会把它收回；与另一张已翻开的牌比较，
-     * 点数相同则两张都标记为已配对并加分，否则扣分并**把两张牌都收回**。
+     * 【实验五】处理一次点击：3 张牌配对。
+     *
+     * <ul>
+     *   <li>已配对的牌不可再操作；</li>
+     *   <li>已翻开但未配对的牌再点一次 = 收回；</li>
+     *   <li>凑满 3 张未配对的翻开牌时结算，并把结果写入 {@link #getLastResult()}。</li>
+     * </ul>
      */
     public void chooseCardAtIndex(int index) {
+        lastResult = Result.NONE;
         if (index < 0 || index >= cards.size()) {
             return;
         }
-        Card card = cardAtIndex(index);
+        Card card = cards.get(index);
         if (card.isMatched) {
             return;
         }
@@ -97,34 +154,53 @@ public class CardMatchingGame {
             card.isChosen = false;
             return;
         }
-        for (Card otherCard : cards) {
-            if (otherCard != card && otherCard.isChosen && !otherCard.isMatched) {
-                int matchScore = card.match(new Card[]{otherCard});
-                if (matchScore > 0) {
-                    score += matchScore * MATCH_BONUS;
-                    otherCard.isMatched = true;
-                    card.isMatched = true;
-                    card.isChosen = true;
-                } else {
-                    score -= MISMATCH_PENALTY;
-                    // 不匹配：两张牌先都保持翻开，由界面延时调用 clearChosen() 统一翻回去
-                    otherCard.isChosen = true;
-                    card.isChosen = true;
-                }
-                score -= COST_TO_CHOOSE;
-                return;
+
+        card.isChosen = true;
+        score -= COST_TO_CHOOSE;
+
+        // 收集本次「已翻开且未配对」的牌
+        List<Card> opened = new ArrayList<>(MATCH_GROUP_SIZE);
+        for (Card other : cards) {
+            if (other.isChosen && !other.isMatched) {
+                opened.add(other);
             }
         }
-        score -= COST_TO_CHOOSE;
-        card.isChosen = true;
+        if (opened.size() < MATCH_GROUP_SIZE) {
+            return;
+        }
+
+        // 用「除自己以外」的另外 2 张做判定，避免自己和自己比较
+        List<Card> others = new ArrayList<>(MATCH_GROUP_SIZE - 1);
+        for (Card other : opened) {
+            if (other != card) {
+                others.add(other);
+            }
+        }
+        if (others.size() != MATCH_GROUP_SIZE - 1) {
+            return;
+        }
+
+        int matchScore = card.match(others.toArray(new Card[0]));
+        if (matchScore > 0) {
+            score += matchScore * MATCH_GROUP_SIZE;
+            for (Card other : opened) {
+                other.isMatched = true;
+            }
+            lastResult = Result.MATCHED;
+        } else {
+            score -= MISMATCH_PENALTY * (MATCH_GROUP_SIZE - 1);
+            lastResult = Result.MISMATCH;
+            // 三张保持翻开，等界面延时后调用 clearChosen()
+        }
     }
 
-    /** 把所有「翻开但没配对」的牌翻回去（界面在展示完不匹配的两张牌后调用） */
+    /** 把没配对的翻开牌全部翻回去（错配展示结束后由界面调用） */
     public void clearChosen() {
         for (Card card : cards) {
             if (!card.isMatched) {
                 card.isChosen = false;
             }
         }
+        lastResult = Result.NONE;
     }
 }

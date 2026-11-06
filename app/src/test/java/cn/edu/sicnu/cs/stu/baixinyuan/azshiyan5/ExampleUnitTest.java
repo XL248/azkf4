@@ -1,4 +1,4 @@
-package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4;
+package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5;
 
 import org.junit.Test;
 

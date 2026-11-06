@@ -1,4 +1,4 @@
-package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.data;
+package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.data;
 
 /**
  * 全局共享的玩家数据（内存单例）。

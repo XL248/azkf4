@@ -1,4 +1,4 @@
-package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4;
+package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4", appContext.getPackageName());
+        assertEquals("cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5", appContext.getPackageName());
     }
 }

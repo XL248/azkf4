@@ -1,27 +1,19 @@
 package cn.edu.sicnu.cardgame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
- * 一副 52 张的牌堆，随机抽牌（模型层）。
- * 由实验附件 Deck.kt 等价改写为 Java。
+ * 一副牌（模型层）。
+ * 实验五新增 {@link #drawMatchedCards(int, int)}：保证每 {@code groupSize} 张点数相同，
+ * 一次发满 {@code count} 张时永远可以全部配对完成。
  */
 public class Deck {
 
     private final List<Card> cards = new ArrayList<>();
-    private final Random random;
 
     public Deck() {
-        this(new Random());
-    }
-
-    /** 允许测试注入固定种子的随机数，保证结果可复现 */
-    public Deck(Random random) {
-        this.random = random;
         for (String suit : Card.validSuits) {
             for (String rank : Card.rankStrings) {
                 cards.add(new Card(suit, rank));
@@ -29,35 +21,61 @@ public class Deck {
         }
     }
 
-    /** 剩余的牌数 */
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
+
     public int size() {
         return cards.size();
     }
 
-    /**
-     * 按「成对」规则发牌：返回 count 张牌，保证每个出现的点数都是 2 张，
-     * 因此整局一定能把 16 张全部配对完（不会出现落单的牌）。
-     */
-    public List<Card> drawMatchedCards(int count) {
-        List<Card> picked = new ArrayList<>();
-        int pairs = Math.max(1, count / 2);
-        List<String> ranks = new ArrayList<>(Arrays.asList(Card.rankStrings));
-        Collections.shuffle(ranks, random);
-        List<String> suits = new ArrayList<>(Arrays.asList(Card.validSuits));
-        for (int i = 0; i < pairs && i < ranks.size(); i++) {
-            Collections.shuffle(suits, random);
-            picked.add(new Card(suits.get(0), ranks.get(i)));
-            picked.add(new Card(suits.get(1), ranks.get(i)));
-        }
-        Collections.shuffle(picked, random);
-        return picked;
-    }
-
-    /** 随机抽一张牌，牌堆空了返回 null */
+    /** 随机抽一张（抽走即从牌堆移除） */
     public Card drawRandomCard() {
         if (cards.isEmpty()) {
             return null;
         }
-        return cards.remove(random.nextInt(cards.size()));
+        return cards.remove((int) (Math.random() * cards.size()));
+    }
+
+    /** 兼容旧调用：2 张同点数为一组 */
+    public List<Card> drawMatchedCards(int count) {
+        return drawMatchedCards(count, 2);
+    }
+
+    /**
+     * 发出 {@code count} 张牌，每 {@code groupSize} 张点数相同、花色各不相同。
+     * 例：count=24、groupSize=3 → 8 组 × 3 张。
+     *
+     * @throws IllegalArgumentException count 不是 groupSize 的整数倍，或 groupSize 超出点数上限
+     */
+    public List<Card> drawMatchedCards(int count, int groupSize) {
+        if (groupSize < 2 || groupSize > Card.validSuits.length) {
+            throw new IllegalArgumentException("groupSize 必须在 2.." + Card.validSuits.length + " 之间");
+        }
+        if (count <= 0 || count % groupSize != 0) {
+            throw new IllegalArgumentException("count 必须是 groupSize 的整数倍");
+        }
+        int groups = count / groupSize;
+        if (groups > Card.rankStrings.length) {
+            throw new IllegalArgumentException("牌堆里没有 " + groups + " 个不同点数");
+        }
+
+        List<String> ranks = new ArrayList<>();
+        Collections.addAll(ranks, Card.rankStrings);
+        Collections.shuffle(ranks);
+
+        List<String> suits = new ArrayList<>();
+        Collections.addAll(suits, Card.validSuits);
+
+        List<Card> picked = new ArrayList<>(count);
+        for (int g = 0; g < groups; g++) {
+            String rank = ranks.get(g);
+            Collections.shuffle(suits);
+            for (int i = 0; i < groupSize; i++) {
+                picked.add(new Card(suits.get(i), rank));
+            }
+        }
+        Collections.shuffle(picked);
+        return picked;
     }
 }
