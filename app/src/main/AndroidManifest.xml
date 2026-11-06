@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Azshiyan4">
+        android:theme="@style/Theme.Azshiyan5">
 
         <!-- 主界面：显示玩家信息 -->
         <activity
@@ -32,9 +32,10 @@
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- 翻牌游戏界面 -->
+        <!-- 翻牌游戏界面：横竖屏自己处理（不同方向发不同张数的牌） -->
         <activity
             android:name=".GameActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:label="@string/title_game"
             android:parentActivityName=".MainActivity" />

@@ -65,12 +65,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/Widget.Azshiyan4.RowLabel"
+                        style="@style/Widget.Azshiyan5.RowLabel"
                         android:text="@string/label_name" />
 
                     <TextView
                         android:id="@+id/value_name"
-                        style="@style/Widget.Azshiyan4.RowValue"
+                        style="@style/Widget.Azshiyan5.RowValue"
                         tools:text="白新元" />
                 </LinearLayout>
 
@@ -81,12 +81,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/Widget.Azshiyan4.RowLabel"
+                        style="@style/Widget.Azshiyan5.RowLabel"
                         android:text="@string/label_gender" />
 
                     <TextView
                         android:id="@+id/value_gender"
-                        style="@style/Widget.Azshiyan4.RowValue"
+                        style="@style/Widget.Azshiyan5.RowValue"
                         tools:text="男" />
                 </LinearLayout>
 
@@ -97,12 +97,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/Widget.Azshiyan4.RowLabel"
+                        style="@style/Widget.Azshiyan5.RowLabel"
                         android:text="@string/label_phone" />
 
                     <TextView
                         android:id="@+id/value_phone"
-                        style="@style/Widget.Azshiyan4.RowValue"
+                        style="@style/Widget.Azshiyan5.RowValue"
                         tools:text="138 0000 0000" />
                 </LinearLayout>
 
@@ -113,12 +113,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/Widget.Azshiyan4.RowLabel"
+                        style="@style/Widget.Azshiyan5.RowLabel"
                         android:text="@string/label_high_score" />
 
                     <TextView
                         android:id="@+id/value_high_score"
-                        style="@style/Widget.Azshiyan4.RowValue"
+                        style="@style/Widget.Azshiyan5.RowValue"
                         android:textColor="@color/accent_green"
                         tools:text="0" />
                 </LinearLayout>

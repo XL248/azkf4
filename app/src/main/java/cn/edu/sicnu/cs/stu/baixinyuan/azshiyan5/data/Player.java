@@ -1,4 +1,4 @@
-package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.data;
+package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.data;
 
 /**
  * 玩家信息（姓名、性别、电话、最高分）。

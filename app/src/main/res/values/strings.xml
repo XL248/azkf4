@@ -15,6 +15,7 @@
     <string name="btn_save">保存</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_restart">重新开始一局</string>
+    <string name="btn_back">←</string>
 
     <string name="gender_male">男</string>
     <string name="gender_female">女</string>
@@ -25,10 +26,14 @@
 
     <string name="value_score">分数 %1$d</string>
     <string name="value_best">最高 %1$d</string>
-    <string name="value_matched">配对 %1$d/16</string>
-    <string name="status_hint">点击卡片翻开，点数相同即可配对得分</string>
-    <string name="status_mismatch">点数不同，两张牌都翻回去</string>
+    <string name="value_matched">配对 %1$d/%2$d</string>
+    <string name="status_hint">每翻 3 张，点数全部相同即配对成功</string>
+    <string name="status_mismatch">点数不同，三张牌都翻回去</string>
     <string name="status_finished">恭喜，全部配对完成！</string>
+    <string name="status_rotated">已切换%s布局，重新发 %2$d 张牌</string>
+
+    <string name="orientation_landscape">横屏</string>
+    <string name="orientation_portrait">竖屏</string>
 
     <string name="hint_name">请输入姓名</string>
     <string name="hint_phone">请输入电话</string>
@@ -40,4 +45,12 @@
     <string name="card_face_desc">%1$s%2$s</string>
 
     <string name="info_hint">修改后的信息仅保存在内存中，不写入文件</string>
+
+    <!-- 实验五：菜单与「关于」对话框 -->
+    <string name="menu_about">关于</string>
+    <string name="about_title">关于本应用</string>
+    <string name="about_version">版本 %1$s</string>
+    <string name="about_desc">实验五：RecyclerView 翻牌游戏\nMVC 分层 + 3 张牌配对 + 横竖屏不同牌数</string>
+    <string name="about_author">作者：白芯源  学号：2024110502</string>
+    <string name="about_close">知道了</string>
 </resources>

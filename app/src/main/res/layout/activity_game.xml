@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_background"
@@ -10,32 +10,31 @@
     android:padding="12dp"
     tools:context=".GameActivity">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/button_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="@string/btn_back"
+            android:textColor="@color/brand_primary"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-
-            <TextView
-                android:id="@+id/button_back"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:gravity="center"
-                android:text="←"
-                android:textColor="@color/brand_primary"
-                android:textSize="22sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@string/title_game"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
+            android:layout_marginStart="4dp"
+            android:text="@string/title_game"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,8 +46,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -85,13 +84,15 @@
         android:textSize="13sp"
         tools:text="@string/status_hint" />
 
-    <GridLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:useDefaultMargins="false" />
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_restart"

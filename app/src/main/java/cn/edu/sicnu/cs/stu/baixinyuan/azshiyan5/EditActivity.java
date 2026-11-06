@@ -1,4 +1,4 @@
-package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4;
+package cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,12 +8,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.util.SystemBars;
+import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.util.SystemBars;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
-import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.data.Player;
-import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan4.data.PlayerStore;
+import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.data.Player;
+import cn.edu.sicnu.cs.stu.baixinyuan.azshiyan5.data.PlayerStore;
 
 /**
  * 信息修改 Activity：修改姓名、性别、电话。
